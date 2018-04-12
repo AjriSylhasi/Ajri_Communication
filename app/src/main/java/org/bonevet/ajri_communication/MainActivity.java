@@ -66,9 +66,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickRead(View v){
         byte[] buf = new byte[256];
+        ard_read =new String("");
+        vlerat   = new String[0];
         int readSize=0;
         readSize = mPhysicaloid.read(buf);
         if(readSize>0) {
+
             try {
                 ard_read = new String(buf, "UTF-8");
             }
@@ -93,39 +96,39 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 1000);
     }
-
-    private void read() {
-        byte[] buf = new byte[256];
-        int readSize=0;
-        readSize = mPhysicaloid.read(buf);
-        if(readSize>0) {
-            ard_read =new String("");
-            vlerat   = new String[0];
-            try {
-                ard_read = new String(buf, "UTF-8");
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-            mPhysicaloid.clearReadListener();
-
-            vlerat = ard_read.split("-");
-            vl_intensity.setText(vlerat[0] + " A");
-            vl_voltage.setText(vlerat[1] + " V");
-            vl_battery.setText(vlerat[2] + " %");
-            vl_temperature.setText(vlerat[3] + " ℃");
-            vl_range.setText(vlerat[4] + " km");
-            vl_speed.setText(vlerat[5] + " km/h");
-            vl_rpm.setText(vlerat[6] + " rpm's");
-        }
-        btRead.setEnabled(false);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                btRead.setEnabled(true);
-            }
-        }, 1500);
-    }
+//    private void read() {
+//        byte[] buf = new byte[256];
+//        ard_read =new String("");
+//        vlerat   = new String[0];
+//        int readSize=0;
+//        readSize = mPhysicaloid.read(buf);
+//        if(readSize>0) {
+//
+//            try {
+//                ard_read = new String(buf, "UTF-8");
+//            }
+//            catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            mPhysicaloid.clearReadListener();
+//
+//            vlerat = ard_read.split("-");
+//            vl_intensity.setText(vlerat[0] + " A");
+//            vl_voltage.setText(vlerat[1] + " V");
+//            vl_battery.setText(vlerat[2] + " %");
+//            vl_temperature.setText(vlerat[3] + " ℃");
+//            vl_range.setText(vlerat[4] + " km");
+//            vl_speed.setText(vlerat[5] + " km/h");
+//            vl_rpm.setText(vlerat[6] + " rpm's");
+//        }
+//        btRead.setEnabled(false);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                btRead.setEnabled(true);
+//            }
+//        }, 1500);
+//    }
 
     public void onClickSwitch(View v) {
         final int status =(Integer) v.getTag();
