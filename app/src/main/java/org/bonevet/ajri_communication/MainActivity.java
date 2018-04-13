@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(mUsbReceiver, filter);
         setEnabledUi(false);
         if (!mPhysicaloid.isOpened()) {
-            if (mPhysicaloid.open()) { // default 9600bps
+            if (mPhysicaloid.open()) {
                 setEnabledUi(true);
                 btRelays.setClickable(true);
                 btRelays.setText("Ndalur");
@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
             openDevice();
             setEnabledUi(true);
+            btRelays.setClickable(true);
             btRelays.setText("Ndalur");
 
         }
