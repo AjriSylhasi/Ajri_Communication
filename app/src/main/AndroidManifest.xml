@@ -1,24 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.bonevet.ajri_communication">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.bonevet.ajri_communication"
+android:versionCode="1"
+android:versionName="1.0" >
 
-    <application
+<uses-sdk
+    android:minSdkVersion="12"
+    android:targetSdkVersion="18" />
 
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+<uses-feature android:name="android.hardware.usb.host" />
+
+<application
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:theme="@style/AppTheme"
+    tools:ignore="ExtraText">
+
+
+    <!-- TODO : add launchMode singleTask not to run multiple apps -->
+    <activity
+        android:name="org.bonevet.ajri_communication.MainActivity"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-                  android:windowSoftInputMode="adjustPan"
-                  android:screenOrientation="sensorLandscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"  />
+        android:launchMode="singleTask"
+        android:windowSoftInputMode="adjustPan"
+        android:screenOrientation="sensorLandscape">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+
+        <!-- TODO : add usb device attached intent -->
+        <intent-filter>
+            <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+        </intent-filter>
+
+        <!-- TODO : add device filter for usb device being attached -->
+        <meta-data android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+            android:resource="@xml/device_filter" />
+
+    </activity>
+</application>
 
 </manifest>
