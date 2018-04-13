@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         registerReceiver(mUsbReceiver, filter);
         setEnabledUi(false);
+        if (!mPhysicaloid.isOpened()) {
+            if (mPhysicaloid.open()) { // default 9600bps
+                setEnabledUi(true);
+                btRelays.setClickable(true);
+                btRelays.setText("Ndalur");
+            }
+        }
     }
 
     public void onClickSwitch(View v) {
@@ -47,6 +55,14 @@ public class MainActivity extends AppCompatActivity {
             byte[] buf = str.getBytes();
             mPhysicaloid.write(buf, buf.length);
             v.setTag(2);
+            btRelays.setClickable(false);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    btRelays.setClickable(true);
+                }
+            },1700);
+
         } else if (status == 2) {
             btRelays.setText("Ndezur");
             btRelays.setBackgroundResource(R.drawable.round3);
@@ -54,6 +70,13 @@ public class MainActivity extends AppCompatActivity {
             byte[] buf = str.getBytes();
             mPhysicaloid.write(buf, buf.length);
             v.setTag(3);
+            btRelays.setClickable(false);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    btRelays.setClickable(true);
+                }
+            },1700);
         } else {
             btRelays.setText("Ndalur");
             btRelays.setBackgroundResource(R.drawable.round1);
@@ -61,6 +84,13 @@ public class MainActivity extends AppCompatActivity {
             byte[] buf = str.getBytes();
             mPhysicaloid.write(buf, buf.length);
             v.setTag(1);
+            btRelays.setClickable(false);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    btRelays.setClickable(true);
+                }
+            },1700);
         }
     }
 
