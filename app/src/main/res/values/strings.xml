@@ -1,16 +1,12 @@
 <resources>
     <string name="app_name">Touch Tablet App</string>
-    <string name="action_settings">Settings</string>
-    <string name="baud_prompt">Choose Baudrate</string>
+    <string name="settings">Settings</string>
     <string name="open">Lidhu</string>
-    <string name="send">Send</string>
-    <string name="clear">Pastro</string>
     <string name="close">Mbylle</string>
     <string name="refresh">Refresh</string>
     <string name="ndalur">Ndalur</string>
     <string name="ndezur">Ndezur</string>
     <string name="kontakt">Kontakt</string>
-    <string name="autoscroll">Autoscroll</string>
     <string name="txt">Txt</string>
 
     <string name="battery">Battery :</string>

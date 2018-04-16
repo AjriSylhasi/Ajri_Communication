@@ -12,15 +12,15 @@ import android.widget.Button;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.TextView;
 
 
 import com.physicaloid.lib.Physicaloid;
-import com.physicaloid.lib.usb.driver.uart.ReadLisener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
     Button btRelays;
+    TextView shpejt_rpm, crange, int_volt, battery_temp;
     Physicaloid mPhysicaloid;
 
     @SuppressLint("SetTextI18n")
@@ -28,20 +28,73 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         btRelays = (Button) findViewById(R.id.btRelays);
         mPhysicaloid = new Physicaloid(this);
+        shpejt_rpm = (TextView) findViewById(R.id.shpejt_rpm);
+        crange = (TextView) findViewById(R.id.crange);
+        int_volt = (TextView) findViewById(R.id.int_volt);
+        battery_temp = (TextView) findViewById(R.id.battery_temp);
+
         mPhysicaloid.setBaudrate(9600);
         btRelays.setTag(1);
+
+        shpejt_rpm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SpeedActivity.class);
+                startActivity(intent);
+            }
+        });
+        crange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, RangeActivity.class);
+                startActivity(intent);
+            }
+        });
+        int_volt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int_volt.setText("Intensiteti, voltazha");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        int_volt.setText("");
+                    }
+                }, 1000);
+            }
+        });
+        battery_temp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                battery_temp.setText("Batteria, temperatura");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        battery_temp.setText("");
+                    }
+                }, 1000);
+            }
+        });
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         registerReceiver(mUsbReceiver, filter);
+
         setEnabledUi(false);
+
         if (!mPhysicaloid.isOpened()) {
             if (mPhysicaloid.open()) {
                 setEnabledUi(true);
-                btRelays.setClickable(true);
                 btRelays.setText("Ndalur");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        btRelays.setClickable(true);
+                    }
+                }, 1700);
             }
         }
     }
@@ -61,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     btRelays.setClickable(true);
                 }
-            },1700);
+            }, 1700);
 
         } else if (status == 2) {
             btRelays.setText("Ndezur");
@@ -76,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     btRelays.setClickable(true);
                 }
-            },1700);
+            }, 1700);
         } else {
             btRelays.setText("Ndalur");
             btRelays.setBackgroundResource(R.drawable.round1);
@@ -90,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     btRelays.setClickable(true);
                 }
-            },1700);
+            }, 1700);
         }
     }
 
@@ -106,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void closeDevice() {
-        if(mPhysicaloid.close()) {
+        if (mPhysicaloid.close()) {
             setEnabledUi(false);
             mPhysicaloid.clearReadListener();
         }
@@ -119,8 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 btRelays.setClickable(true);
             }
 
-        }
-        else {
+        } else {
             setEnabledUi(false);
             btRelays.setClickable(false);
             btRelays.setBackgroundResource(R.drawable.round1);
